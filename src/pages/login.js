@@ -3,26 +3,30 @@ import { useNavigate, Link } from 'react-router-dom';
 import './styles.css'; // Import the CSS file
 
 const Login = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [username, setUsername] = useState('');  // Set initial state for username
+    const [password, setPassword] = useState('');  // Set initial state for password
     const [error, setError] = useState('');
     const navigate = useNavigate();
+
+    // Handle login request
     const handleLogin = async (e) => {
-        e.preventDefault();
+        e.preventDefault();  // Prevent the form from refreshing the page
         try {
-            const response = await fetch('http://localhost:5000/register', {
+            // Send login credentials to the backend (use the correct endpoint, typically /login)
+            const response = await fetch('http://localhost:5000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ username, password }),
+                body: JSON.stringify({ username, password }),  // Send username and password from state
             });
-    
-            const data = await response.json();
-    
+
+            const data = await response.json();  // Parse response as JSON
+
             if (response.ok) {
+                localStorage.setItem('username', username);                
                 console.log('Login successful:', { username });
-                navigate('/pages/dashboard'); // Redirect to a dashboard or home page
+                navigate('/dashboard');  // Redirect to dashboard or home page
             } else {
                 setError(data.message || 'Invalid username or password.');
             }
@@ -31,7 +35,6 @@ const Login = () => {
             console.error('Error during login:', error);
         }
     };
-    
 
     return (
         <div className="container">
@@ -41,8 +44,8 @@ const Login = () => {
                     <label>Username</label>
                     <input
                         type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        defaultValue={username}  // Use state value
+                        onChange={(e) => setUsername(e.target.value)}  // Update state on input change
                         required
                         className="input"
                     />
@@ -51,8 +54,8 @@ const Login = () => {
                     <label>Password</label>
                     <input
                         type="password"
-                        value= {password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        defaultValue={password}  // Use state value
+                        onChange={(e) => setPassword(e.target.value)}  // Update state on input change
                         required
                         className="input"
                     />

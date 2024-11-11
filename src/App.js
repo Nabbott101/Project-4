@@ -10,8 +10,8 @@ const App = () => {
         <Router>
             <Routes>
                 <Route path="/pages/InsertRegister" element={<InsertRegister />} />
-                <Route path="/" element={<Login />} />
-                <Route path="/dashboard" element={<Dashboard username={localStorage.getItem('username')} />} />
+                <Route path="/" element={<Login />} /> {/*login Route*/}
+                <Route path="/dashboard" element={<Dashboard />} />
             </Routes> 
         </Router>
     );
