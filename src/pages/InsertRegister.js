@@ -7,6 +7,7 @@ const InsertRegister = ({ usernameRef, passwordRef }) => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState(''); // New state for confirm password
     const [error, setError] = useState('');
+    const [agree, setAgree] = useState(false); // New state for the checkbox
     const navigate = useNavigate();
 
     // Password validation function
@@ -28,6 +29,12 @@ const InsertRegister = ({ usernameRef, passwordRef }) => {
         // Check if passwords match
         if (password !== confirmPassword) {
             setError('Passwords do not match.');
+            return;
+        }
+
+        // Ensure the user agrees to the terms and conditions
+        if (!agree) {
+            setError('You must agree to the Terms and Conditions and Privacy Policy to register.');
             return;
         }
 
@@ -82,7 +89,7 @@ const InsertRegister = ({ usernameRef, passwordRef }) => {
                     <label>Username</label>
                     <input
                         type="text"
-                        defaultValue={username}
+                        value={username}
                         ref={usernameRef}
                         onChange={(e) => setUsername(e.target.value)}
                         required
@@ -93,7 +100,7 @@ const InsertRegister = ({ usernameRef, passwordRef }) => {
                     <label>Password</label>
                     <input
                         type="password"
-                        defaultValue={password}
+                        value={password}
                         ref={passwordRef}
                         onChange={(e) => setPassword(e.target.value)}
                         required
@@ -109,6 +116,17 @@ const InsertRegister = ({ usernameRef, passwordRef }) => {
                         required
                         className="input"
                     />
+                </div>
+                <div>
+                    <label>
+                        <input 
+                            required
+                            type="checkbox" 
+                            checked={agree}
+                            onChange={() => setAgree(!agree)} 
+                        />
+                        I agree to the <a href="/terms">Terms and Conditions</a> and <a href="/privacy">Privacy Policy</a>
+                    </label>
                 </div>
                 {error && <p className="error">{error}</p>} 
                 <button type="submit" className="button">Register</button> 
