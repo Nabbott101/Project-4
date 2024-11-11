@@ -13,8 +13,11 @@ const categories = [
 const Dashboard = () => {
     const navigate = useNavigate();
     const [selectedQuestion, setSelectedQuestion] = useState('');
+    const [newQuestion, setNewQuestion] = useState(''); // For new question
+    const [newAnswer, setNewAnswer] = useState(''); // For new answer
+    const [questions, setQuestions] = useState(categories); // Initially using predefined categories
+    const [activeTab, setActiveTab] = useState('view'); // 'view' or 'add'
     const [username, setUsername] = useState('');
-    const [error] = useState('');
 
     // Get the username from localStorage when the component mounts
     useEffect(() => {
@@ -22,40 +25,122 @@ const Dashboard = () => {
         if (storedUsername) {
             setUsername(storedUsername);
             //fetchUserData(storedUsername);  // Fetch user data
-        } else {
-            navigate('/'); // If no username, redirect to login
-        }
+            } else {
+                navigate('/'); // If no username, redirect to login
+            }
     }, [navigate]);
+    
 
+    // Logout handler
     const handleLogout = () => {
         localStorage.removeItem('username');
         localStorage.removeItem('password');
         navigate('/'); // Redirect to the login page
     };
 
+    // Category click handler
     const handleCategoryClick = (category) => {
         setSelectedQuestion(category.question);
+    };
+
+    // Handle adding a new question
+    const handleAddQuestion = () => {
+        if (newQuestion && newAnswer) {
+            const newQuestionObject = {
+                name: newQuestion,
+                question: newAnswer
+            };
+
+            // Add the new question to the list of questions
+            setQuestions([...questions, newQuestionObject]);
+
+            // Clear input fields after adding the question
+            setNewQuestion('');
+            setNewAnswer('');
+        } else {
+            alert("Please enter both question and answer.");
+        }
+    };
+
+    // Handle deleting a question
+    const handleDeleteQuestion = (questionToDelete) => {
+        const updatedQuestions = questions.filter((category) => category.name !== questionToDelete.name);
+        setQuestions(updatedQuestions); // Update the state to remove the question
     };
 
     return (
         <div className="dashboard-container">
             <div className="sidebar">
                 <h2>Categories</h2>
-                {categories.map((category, index) => (
-                    <button 
-                        key={index} 
-                        onClick={() => handleCategoryClick(category)} 
-                        className="category-button"
+                
+                {/* Tabs */}
+                <div className="tabs">
+                    <button
+                        className={activeTab === 'view' ? 'tab-active' : ''}
+                        onClick={() => setActiveTab('view')}
                     >
-                        {category.name}
+                        View Categories
                     </button>
-                ))}
+                    <button
+                        className={activeTab === 'add' ? 'tab-active' : ''}
+                        onClick={() => setActiveTab('add')}
+                    >
+                        Add New Question
+                    </button>
+                </div>
+
+                {/* Tab Content */}
+                {activeTab === 'view' && (
+                    <div className="category-list">
+                        {questions.map((category, index) => (
+                            <div key={index} className="category-item">
+                                <button
+                                    onClick={() => handleCategoryClick(category)}
+                                    className="category-button"
+                                >
+                                    {category.name}
+                                </button>
+                                <button
+                                    onClick={() => handleDeleteQuestion(category)} // Delete button
+                                    className="delete-button"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                )}
+
+                {activeTab === 'add' && (
+                    <div className="add-question-container">
+                        <h3>Add a New Question and Answer</h3>
+                        <div>
+                            <input
+                                type="text"
+                                placeholder="Enter question"
+                                value={newQuestion}
+                                onChange={(e) => setNewQuestion(e.target.value)}
+                                className="input"
+                            />
+                        </div>
+                        <div>
+                            <input
+                                type="text"
+                                placeholder="Enter answer"
+                                value={newAnswer}
+                                onChange={(e) => setNewAnswer(e.target.value)}
+                                className="input"
+                            />
+                        </div>
+                        <button onClick={handleAddQuestion} className="button">Add Question</button>
+                    </div>
+                )}
+
                 <button onClick={handleLogout} className="logout-button">Logout</button>
             </div>
+
             <div className="main-content">
-                {error && <p className="error">{error}</p>}
                 <h1>Welcome, {username}!</h1>
-            
                 {selectedQuestion && <h3>{selectedQuestion}</h3>}
             </div>
         </div>

@@ -76,3 +76,86 @@ h1, h2, h3 {
     margin: 0 0 15px;
 }
 
+.category-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.delete-button {
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.delete-button:hover {
+    background-color: darkred;
+}
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.tabs button {
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    background-color: lightgray;
+    font-size: 16px;
+    flex-grow: 1;
+}
+
+.tab-active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.category-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.delete-button {
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.delete-button:hover {
+    background-color: darkred;
+}
+
+.add-question-container {
+    margin-top: 20px;
+}
+
+.input {
+    margin: 10px 0;
+    padding: 8px;
+    width: 100%;
+}
+
+.button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: darkgreen;
+}
+
